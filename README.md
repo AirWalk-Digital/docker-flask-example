@@ -6,7 +6,12 @@ An introductory example to Docker images, in the context of a Python Flask app.
 * Using a classic [python environment](https://docs.python.org/3/library/venv.html)
 * Using a Docker container.
 
-## Python environment
+#### Prerequisites
+
+* Python (you'll most likely have it)
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+## Python Environment
 1. Create new python enviornment using [venv](https://docs.python.org/3/library/venv.html):
 ```
 python3 -m venv env
@@ -49,7 +54,7 @@ docker run my-flask-image
 
 **What's going on?**
 
-Our Flask server is indeed running inside the container, listening on port 5000. But there's a catch, the container doesn't know anything about the outside world. In other words, our local machine can't communicate with it, _yet_.
+Our Flask server is indeed running inside the container, listening on port 5000. But there's a catch, the container has not exposed anything about itself to the outside world. In other words, our local machine can't communicate with it, _yet_.
 
 We need to tell Docker how to make the port 5000 accessible from **outside** the container. This is where **port mapping** comes into play.
 
@@ -62,6 +67,34 @@ docker run -p 5000:5000 my-flask-image
 **`-p 5000:5000`** means: map the port 5000 on our local host (left) to port 5000 in the container (right).
 
 7. Refresh the browser tab to see the running app. Well done! You are running a containerised Flask application, ready to serve traffic.
+
+### Extras: lifting the curtain 
+
+Believe it or not, our Docker container looks and often behaves like a fully fledged VM. It has networking features, persistent volumes, a filesystem, etc.
+So let us take a look at the container's filesystem.
+
+1. If your container is still running, stop it by pressing CTRL+C.
+
+2. Let's start it again, but this time, with a few extra goodies:
+```
+docker run --name mycontainer -d -i -p 5000:5000 my-flask-image 
+```
+
+**`--name`**: give the container a name to be able to reference it in the next step
+**`-d`**: run in detached mode (which frees up our terminal)
+**`-i`**: alias for `-interactive` - allows us to send inputs to the container through standard input
+
+3. Now run an interactive (`-it`) shell inside the container, using the exec command:
+```
+docker exec -it mycontainer sh
+```
+
+4. Run some shell commands like `ls`, `cd ..`, and have a look around! Notice where the application code resides, and how that relates to the Dockerfile.
+
+5. Clean up. You can also start/stop/delete containers in the Docker desktop app.
+```
+docker stop mycontainer
+```
 
 ### More on Port Mapping
 
