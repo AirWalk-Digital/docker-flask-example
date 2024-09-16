@@ -80,8 +80,8 @@ So let us take a look at the container's filesystem.
 docker run --name mycontainer -d -i -p 5000:5000 my-flask-image 
 ```
 
-**`--name`**: give the container a name to be able to reference it in the next step
-**`-d`**: run in detached mode (which frees up our terminal)
+**`--name`**: give the container a name to be able to reference it in the next step\
+**`-d`**: run in detached mode (which frees up our terminal)\
 **`-i`**: alias for `-interactive` - allows us to send inputs to the container through standard input
 
 3. Now run an interactive (`-it`) shell inside the container, using the exec command:
